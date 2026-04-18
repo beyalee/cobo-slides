@@ -8,7 +8,7 @@
 ## 安装
 
 ```bash
-git clone https://github.com/<your-org>/cobo-slides ~/.claude/skills/cobo-slides
+git clone https://github.com/beyalee/cobo-slides ~/.claude/skills/cobo-slides
 ```
 
 安装后 Claude Code 会自动识别，无需重启。
