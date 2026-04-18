@@ -75,16 +75,28 @@ Wait for confirmation before generating.
 <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 ```
 
-**Fixed top nav structure** (always present, see COBO_BRAND.md for full CSS):
+**Fixed top nav — two-row design** (`--nav-h: 78px`). See COBO_BRAND.md for full CSS:
 ```html
 <nav class="top-nav" id="topNav">
-  <div class="tn-logo"><!-- Cobo SVG wordmark --></div>
-  <div class="tn-divider"></div>
-  <div class="tn-chapters"><!-- chapter buttons with data-start/data-end --></div>
-  <div class="tn-counter" id="slideCounter">01 / N</div>
+  <!-- Row 1: logo · deck title · slide counter -->
+  <div class="tn-row1">
+    <div class="tn-logo" onclick="goToSlide(0)"><!-- Cobo SVG wordmark --></div>
+    <div class="tn-divider"></div>
+    <div class="tn-deck-title">[演示标题]</div>
+    <div class="tn-counter" id="slideCounter">01 / N</div>
+  </div>
+  <!-- Row 2: one button per slide -->
+  <div class="tn-row2">
+    <button class="tn-ch" data-start="0" data-end="0">
+      <span class="tn-ch-num">01</span><span class="tn-ch-name">封面</span>
+    </button>
+    <!-- repeat for each slide … -->
+  </div>
 </nav>
 <div class="progress-bar" id="progressBar"></div>
 ```
+
+**Row 2 rule**: every slide gets its own `<button>`. `data-start = data-end = 0-based index`. `tn-ch-num` = zero-padded slide number, `tn-ch-name` = short slide title (≤4 Chinese chars or ≤6 English chars).
 
 **Each slide must have** `padding-top: var(--nav-h)` to not hide under the nav.
 

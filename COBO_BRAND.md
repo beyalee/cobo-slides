@@ -203,19 +203,12 @@ Scale with `height` attribute only (width: auto). Never distort.
   color: var(--text-sec);
   transition: color 0.2s;
 }
-.tn-ch::after {
-  content: ''; position: absolute; top: 0; left: 10%; right: 10%;
-  height: 2px; border-radius: 0 0 1px 1px; background: var(--purple);
-  transform: scaleX(0); transform-origin: center;
-  transition: transform 0.25s var(--ease);
-  /* top:0 not bottom:0 — bottom would overlap with the progress bar below the nav */
-}
+/* No ::after indicator line — active state uses background + text color only */
 .tn-ch:hover { background: rgba(255,255,255,0.03); }
 .tn-ch:hover .tn-ch-name { color: rgba(255,255,255,0.75); }
-.tn-ch.active { background: rgba(124,127,232,0.06); }
+.tn-ch.active { background: rgba(124,127,232,0.08); }
 .tn-ch.active .tn-ch-num { color: var(--purple); }
 .tn-ch.active .tn-ch-name { color: var(--text); font-weight: 600; }
-.tn-ch.active::after { transform: scaleX(1); }
 
 /* ── Progress bar (below nav) ── */
 .progress-bar {
