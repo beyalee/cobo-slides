@@ -319,7 +319,12 @@ Use at top of each content slide to label the section.
 ```html
 <div class="g4">
   <div class="cap">
-    <div class="cap-icon">📥</div>
+    <div class="cap-icon">
+      <!-- ALWAYS use inline SVG — never emoji. See Icon System below. -->
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C7FE8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v12m0 0l-4-4m4 4l4-4"/><rect x="3" y="17" width="18" height="4" rx="1"/>
+      </svg>
+    </div>
     <div class="cap-t">收款</div>
     <ul><li>功能点</li></ul>
   </div>
@@ -329,7 +334,7 @@ Use at top of each content slide to label the section.
 ```css
 .g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--gap-sm); }
 .cap { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:clamp(0.65rem,1.3vw,1.05rem); }
-.cap-icon { font-size:clamp(1rem,1.7vw,1.4rem); margin-bottom:5px; }
+.cap-icon { display:block; line-height:0; margin-bottom:8px; }
 .cap-t { font-size:var(--h3-size); font-weight:700; margin-bottom:5px; }
 ```
 
@@ -589,11 +594,89 @@ When generating product content, use these accurate terms:
 
 ---
 
+## Icon System
+
+**Rule: NEVER use emoji as icons. Always use inline SVG.**
+
+Emoji look unprofessional and render inconsistently across systems. Cobo.com uses minimalist line-drawn icons. Follow the same style:
+
+- **Stroke-based** — `fill="none"`, `stroke="COLOR"`, `stroke-width="1.5"`, `stroke-linecap="round"`, `stroke-linejoin="round"`
+- **Size** — `width="22" height="22" viewBox="0 0 24 24"` (scales with CSS if needed)
+- **Color** — `stroke="#7C7FE8"` for accent icons (in cards, feature lists); `stroke="rgba(255,255,255,0.75)"` for neutral icons (cert badges, security)
+- **Container** — `.cap-icon`, `.why-icon`, `.sec-icon` etc. must have `display:block; line-height:0; margin-bottom:8px`
+
+**Starter icon library (copy-paste ready):**
+
+```html
+<!-- Layers / Flexible -->
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C7FE8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M2 9.5l10 5 10-5-10-5z"/><path d="M2 14l10 5 10-5"/><path d="M2 18.5l10 5 10-5"/>
+</svg>
+
+<!-- Network / Chain Support -->
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C7FE8" stroke-width="1.5" stroke-linecap="round">
+  <circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/>
+  <circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/>
+  <line x1="5.8" y1="6.9" x2="9.5" y2="10.1"/><line x1="18.2" y1="6.9" x2="14.5" y2="10.1"/>
+  <line x1="5.8" y1="17.1" x2="9.5" y2="13.9"/><line x1="18.2" y1="17.1" x2="14.5" y2="13.9"/>
+</svg>
+
+<!-- Zap / Automation -->
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C7FE8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="13,2 6,13 12,13 11,22 18,11 12,11"/>
+</svg>
+
+<!-- Headset / Support -->
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C7FE8" stroke-width="1.5" stroke-linecap="round">
+  <path d="M3 15V11a9 9 0 0 1 18 0v4"/>
+  <rect x="1.5" y="13" width="4" height="6" rx="1.5"/>
+  <rect x="18.5" y="13" width="4" height="6" rx="1.5"/>
+  <path d="M22.5 19v1a3 3 0 0 1-3 3h-3"/>
+</svg>
+
+<!-- Shield + Check / Security -->
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2L4 6v6c0 5.5 3.5 9.74 8 11 4.5-1.26 8-5.5 8-11V6z"/>
+  <polyline points="9,12 11,14 15,10"/>
+</svg>
+
+<!-- Lock / Key Security -->
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="1.5" stroke-linecap="round">
+  <rect x="4" y="11" width="16" height="11" rx="2"/>
+  <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+  <circle cx="12" cy="16" r="1.5" fill="rgba(255,255,255,0.75)" stroke="none"/>
+</svg>
+
+<!-- Award / Certificate -->
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="9" r="5"/>
+  <polyline points="9.5,14.5 8,22 12,19.5 16,22 14.5,14.5"/>
+</svg>
+
+<!-- Download / Receive -->
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C7FE8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 2v12m0 0l-4-4m4 4l4-4"/><rect x="3" y="17" width="18" height="4" rx="1"/>
+</svg>
+
+<!-- Upload / Send -->
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C7FE8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 22V10m0 0l4 4m-4-4l-4 4"/><rect x="3" y="3" width="18" height="4" rx="1"/>
+</svg>
+
+<!-- Globe / Global -->
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7C7FE8" stroke-width="1.5" stroke-linecap="round">
+  <circle cx="12" cy="12" r="9"/>
+  <path d="M2 12h20M12 3c-2.5 2.5-4 5-4 8s1.5 5.5 4 8M12 3c2.5 2.5 4 5 4 8s-1.5 5.5-4 8"/>
+</svg>
+```
+
+---
+
 ## What NOT to do
 
 - ❌ Use Inter, Roboto, or system fonts
 - ❌ Use purple gradients on white backgrounds
-- ❌ Add illustrations or icons beyond emoji
+- ❌ Use emoji as icons — always use inline SVG line-art (see Icon System above)
 - ❌ Let slide content scroll
 - ❌ Cram more than 6 bullet points per slide
 - ❌ Show the style selection phase (always use Cobo Brand)
