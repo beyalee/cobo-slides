@@ -81,16 +81,13 @@ Source:     Google Fonts
 
 ---
 
-## Cobo Logo Wordmark (SVG)
+## Cobo Logo
 
-Use this inline SVG wherever the logo appears:
+Use the official Cobo logo from the CDN. Add `filter:brightness(0) invert(1)` to make it white on dark backgrounds:
 ```html
-<svg viewBox="0 0 72 22" style="height:20px;width:auto;">
-  <text x="0" y="17" font-family="'Varela Round',sans-serif"
-        font-size="18" fill="white" letter-spacing="-0.3">cobo</text>
-</svg>
+<img src="https://www.cobo.com/cobo-logo.svg" alt="Cobo" style="height:20px;width:auto;filter:brightness(0) invert(1);">
 ```
-Scale with `height` attribute only (width: auto). Never distort.
+Scale with `height` only (width: auto). Never distort.
 
 ---
 
@@ -110,9 +107,7 @@ Scale with `height` attribute only (width: auto). Never distort.
   <!-- Row 1: Logo · deck title · slide counter -->
   <div class="tn-row1">
     <div class="tn-logo" onclick="goToSlide(0)">
-      <svg viewBox="0 0 72 22" style="height:18px;width:auto;">
-        <text x="0" y="17" font-family="'Varela Round',sans-serif" font-size="18" fill="white" letter-spacing="-0.3">cobo</text>
-      </svg>
+      <img src="https://www.cobo.com/cobo-logo.svg" alt="Cobo" style="height:20px;width:auto;filter:brightness(0) invert(1);">
     </div>
     <div class="tn-divider"></div>
     <div class="tn-deck-title">[演示标题]</div>
