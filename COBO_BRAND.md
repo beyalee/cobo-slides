@@ -96,79 +96,136 @@ Scale with `height` attribute only (width: auto). Never distort.
 
 ## Fixed Top Navigation Bar
 
-**Required on every presentation. One instance, fixed to top.**
+**Required on every presentation. Two-row design: row 1 = logo + deck title + counter; row 2 = per-slide chapter tabs.**
+
+```
+--nav-h: 78px   (row1=36px + row2=42px)
+```
+
+### HTML structure
 
 ```html
 <nav class="top-nav" id="topNav">
-  <!-- Logo -->
-  <div class="tn-logo" onclick="document.querySelector('#slide-1').scrollIntoView({behavior:'smooth'})">
-    <svg viewBox="0 0 72 22" style="height:20px;width:auto;">
-      <text x="0" y="17" font-family="'Varela Round',sans-serif" font-size="18" fill="white" letter-spacing="-0.3">cobo</text>
-    </svg>
+
+  <!-- Row 1: Logo · deck title · slide counter -->
+  <div class="tn-row1">
+    <div class="tn-logo" onclick="goToSlide(0)">
+      <svg viewBox="0 0 72 22" style="height:18px;width:auto;">
+        <text x="0" y="17" font-family="'Varela Round',sans-serif" font-size="18" fill="white" letter-spacing="-0.3">cobo</text>
+      </svg>
+    </div>
+    <div class="tn-divider"></div>
+    <div class="tn-deck-title">[演示标题]</div>
+    <div class="tn-counter" id="slideCounter">01 / N</div>
   </div>
 
-  <!-- Divider -->
-  <div class="tn-divider"></div>
-
-  <!-- Chapter tabs — data-start/data-end = 0-based slide indices -->
-  <div class="tn-chapters">
-    <button class="tn-ch" data-start="0" data-end="1">关于 Cobo</button>
-    <button class="tn-ch" data-start="2" data-end="5">[Chapter 1]</button>
-    <!-- ...more chapters... -->
+  <!-- Row 2: one button per slide, data-start = data-end = that slide's 0-based index -->
+  <div class="tn-row2">
+    <button class="tn-ch" data-start="0" data-end="0">
+      <span class="tn-ch-num">01</span>
+      <span class="tn-ch-name">封面</span>
+    </button>
+    <button class="tn-ch" data-start="1" data-end="1">
+      <span class="tn-ch-num">02</span>
+      <span class="tn-ch-name">章节名称</span>
+    </button>
+    <!-- one <button> per slide; number = zero-padded slide number -->
   </div>
 
-  <!-- Slide counter -->
-  <div class="tn-counter" id="slideCounter">01 / N</div>
 </nav>
-
 <div class="progress-bar" id="progressBar"></div>
 ```
 
-**CSS for top nav:**
+> **Rule**: Every slide gets its own button in `.tn-row2`. Set `data-start` and `data-end` to the same 0-based index. The number label (`tn-ch-num`) is the slide number zero-padded to 2 digits.
+
+### CSS
+
 ```css
+:root {
+  --nav-h: 78px;  /* row1 36px + row2 42px */
+}
+
+/* ── Outer shell ── */
 .top-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 2000;
   height: var(--nav-h);
-  background: rgba(13,13,13,0.88);
+  background: rgba(13,13,13,0.92);
   backdrop-filter: blur(16px) saturate(120%);
   -webkit-backdrop-filter: blur(16px) saturate(120%);
-  border-bottom: 1px solid var(--border);
+  /* NEVER add border-bottom here — the progress-bar directly below acts as the bottom edge.
+     Adding border-bottom creates two overlapping lines at the nav bottom. */
+  display: flex; flex-direction: column;
+}
+
+/* ── Row 1: logo + title + counter ── */
+.tn-row1 {
   display: flex; align-items: center;
-  padding: 0 var(--pad);
-  gap: clamp(1rem, 3vw, 2.5rem);
+  padding: 0 var(--pad); gap: clamp(0.8rem, 2vw, 2rem);
+  height: 36px; flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
 }
 .tn-logo { display:flex; align-items:center; flex-shrink:0; cursor:pointer; }
-.tn-divider { width:1px; height:18px; background:var(--border-med); flex-shrink:0; }
-.tn-chapters { flex:1; display:flex; align-items:center; gap:clamp(0.1rem,0.5vw,0.3rem); overflow:hidden; }
+.tn-divider { width:1px; height:16px; background:var(--border-med); flex-shrink:0; }
+.tn-deck-title {
+  flex: 1; font-size: clamp(0.6rem, 0.9vw, 0.76rem); font-weight: 500;
+  color: var(--text-sec); letter-spacing: 0.03em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tn-counter {
+  flex-shrink: 0; font-size: clamp(0.55rem, 0.78vw, 0.66rem); font-weight: 600;
+  color: var(--text-sec); letter-spacing: 0.1em;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  padding: 2px 9px; border-radius: 20px; transition: color 0.3s;
+}
+
+/* ── Row 2: chapter tabs, one per slide ── */
+.tn-row2 {
+  display: flex; align-items: stretch;
+  height: 42px; flex: 1;
+}
 .tn-ch {
-  background:none; border:none; cursor:pointer;
-  font-family:var(--font); font-size:clamp(0.58rem,0.85vw,0.72rem); font-weight:500;
-  color:var(--text-sec); padding:clamp(3px,0.5vh,6px) clamp(6px,0.9vw,12px);
-  border-radius:5px; position:relative; white-space:nowrap;
-  transition: color 0.2s ease, background 0.2s ease;
+  flex: 1; background: none; border: none;
+  border-right: 1px solid var(--border);
+  cursor: pointer; font-family: var(--font);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; padding: 0 clamp(4px, 0.8vw, 10px);
+  position: relative; white-space: nowrap;
+  transition: background 0.2s ease;
+}
+.tn-ch:last-child { border-right: none; }
+.tn-ch-num {
+  font-size: clamp(0.5rem, 0.65vw, 0.58rem); font-weight: 700;
+  color: var(--text-muted); letter-spacing: 0.12em;
+  transition: color 0.2s;
+}
+.tn-ch-name {
+  font-size: clamp(0.58rem, 0.85vw, 0.72rem); font-weight: 500;
+  color: var(--text-sec);
+  transition: color 0.2s;
 }
 .tn-ch::after {
-  content:''; position:absolute; bottom:-1px; left:6px; right:6px;
-  height:2px; border-radius:1px; background:var(--purple);
-  transform:scaleX(0); transform-origin:left; transition:transform 0.25s var(--ease);
+  content: ''; position: absolute; bottom: 0; left: 10%; right: 10%;
+  height: 2px; border-radius: 1px 1px 0 0; background: var(--purple);
+  transform: scaleX(0); transform-origin: center;
+  transition: transform 0.25s var(--ease);
 }
-.tn-ch:hover { color:rgba(255,255,255,0.75); background:rgba(255,255,255,0.04); }
-.tn-ch.active { color:var(--text); }
-.tn-ch.active::after { transform:scaleX(1); }
-.tn-counter {
-  flex-shrink:0; font-size:clamp(0.55rem,0.8vw,0.68rem); font-weight:600;
-  color:var(--text-sec); letter-spacing:0.1em;
-  background:rgba(255,255,255,0.04); border:1px solid var(--border);
-  padding:3px 10px; border-radius:20px; transition:color 0.3s;
-}
+.tn-ch:hover { background: rgba(255,255,255,0.03); }
+.tn-ch:hover .tn-ch-name { color: rgba(255,255,255,0.75); }
+.tn-ch.active { background: rgba(124,127,232,0.06); }
+.tn-ch.active .tn-ch-num { color: var(--purple); }
+.tn-ch.active .tn-ch-name { color: var(--text); font-weight: 600; }
+.tn-ch.active::after { transform: scaleX(1); }
+
+/* ── Progress bar (below nav) ── */
 .progress-bar {
-  position:fixed; top:var(--nav-h); left:0; height:2px;
-  background:linear-gradient(90deg, var(--purple), #a5a8ff);
-  width:0%; z-index:1999; transition:width 0.35s ease;
+  position: fixed; top: var(--nav-h); left: 0; height: 2px;
+  background: linear-gradient(90deg, var(--purple), #a5a8ff);
+  width: 0%; z-index: 1999; transition: width 0.35s ease;
 }
 ```
 
-**JS chapter highlighting (in the SlidePresentation class):**
+### JS — `updateChapters` (in SlidePresentation class)
+
 ```javascript
 updateChapters(slideIndex) {
   document.querySelectorAll('.tn-ch').forEach(ch => {
@@ -553,3 +610,4 @@ When generating product content, use these accurate terms:
 - ❌ Show the style selection phase (always use Cobo Brand)
 - ❌ Forget `padding-top: var(--nav-h)` on slides
 - ❌ Negate CSS functions directly (`-clamp()` is invalid — use `calc(-1 * clamp(...))`)
+- ❌ Add `border-bottom` to `.top-nav` — the progress bar sits flush below and serves as the bottom edge; a nav `border-bottom` creates two overlapping lines
