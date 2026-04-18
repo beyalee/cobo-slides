@@ -204,10 +204,11 @@ Scale with `height` attribute only (width: auto). Never distort.
   transition: color 0.2s;
 }
 .tn-ch::after {
-  content: ''; position: absolute; bottom: 0; left: 10%; right: 10%;
-  height: 2px; border-radius: 1px 1px 0 0; background: var(--purple);
+  content: ''; position: absolute; top: 0; left: 10%; right: 10%;
+  height: 2px; border-radius: 0 0 1px 1px; background: var(--purple);
   transform: scaleX(0); transform-origin: center;
   transition: transform 0.25s var(--ease);
+  /* top:0 not bottom:0 — bottom would overlap with the progress bar below the nav */
 }
 .tn-ch:hover { background: rgba(255,255,255,0.03); }
 .tn-ch:hover .tn-ch-name { color: rgba(255,255,255,0.75); }
