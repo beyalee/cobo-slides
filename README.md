@@ -15,15 +15,15 @@ git clone https://github.com/beyalee/cobo-slides ~/.claude/skills/cobo-slides
 
 ---
 
-## 使用
+## 使用方式
 
-在 Claude Code 中直接说：
+**1. 直接描述主题**，Claude 自动生成：
 
 ```
 帮我做一个 Cobo MPC 钱包的客户演示
 ```
 
-或者上传 PDF/PPT：
+**2. 上传 PDF / PPT，转换为 HTML：**
 
 ```
 把这份 PPT 转成 HTML @产品介绍.pdf
